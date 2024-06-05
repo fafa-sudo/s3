@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Duty Status</title>
+    <style>
+        /* Add your CSS styling here */
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            border: 5px solid #FF69B4; /* Thick border */
+        }
+        .group-status {
+            background-color: #6633CC; /* Violet color */
+            padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+        .off-duty {
+            background-color: #C6F47E; /* Green color */
+        }
+        .on-duty {
+            background-color: #FFFF99; /* Yellow color */
+        }
+        p {
+            background-color: #E6E6E6; /* Light gray color */
+            padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+        #result {
+            background-color: #ADD8E6; /* Blue color */
+            padding: 20px;
+            border-radius: 10px;
+        }
+        h1 {
+            background-color: #6633CC; /* Violet color */
+            padding: 10px;
+            border-radius: 10px;
+        }
+        label {
+            background-color: #F7DC6F; /* Yellowish color */
+            padding: 10px;
+            border-radius: 10px;
+        }
+        input[type="text"] {
+            font-size: 24px;
+            font-weight: bold;
+            width: 300px;
+            padding: 10px;
+            border: 1px solid #000;
+            border-radius: 5px;
+        }
+        button[type="button"] {
+            font-size: 18px;
+            font-weight: bold;
+            padding: 10px;
+            border: none;
+            border-radius: 10px;
+            background-color: #008000; /* Green color */
+            color: #FFFFFF; /* White color */
+            cursor: pointer;
+        }
+        button[type="button"]:hover {
+            background-color: #00FF00; /* Light green color */
+        }
+        
+        table {
+          width: 100%;
+          border-collapse: collapse;
+          border-spacing: 0;
+          table-layout: fixed;
+          word-wrap: break-word;
+        }
+        
+        th, td {
+          border-left: 1px solid gray;
+          border-top: 1px solid gray;
+          padding-left: 5px;
+          padding-top: 5px;
+          font-size: 16px;
+          text-align:left;
+          font-weight:normal;
+          overflow-wrap:normal
+        }
+        
+        th {
+          background-color:#E6E6E6; /* Light gray color */
+          font-weight:bold
+        }
+        
+        td {
+          background-color:#FFFFFF; /* White color */
+        }
+
+       .bold {
+  font-weight: bold;
+}
+    
+    </style>
+</head>
+
+<body>
+    <h1>Duty Status</h1>
+    
+    <label for="dateInput">Enter a date (MM/DD/YYYY):</label>
+    
+    <input type="text" id="dateInput">
+    
+    <br><br>
+    
+    <button type="button" onclick="calculateDayOfWeek()">Calculate</button>
+    
+    <br><br>
+    
+    <p id="result"></p>
+
+    <script>
+        document.addEventListener("keydown", function(event) {
+            if (event.key === "Enter") {
+                calculateDayOfWeek();
+            }
+        });
+        
+        function calculateDayOfWeek() {
+            const inputDate = document.getElementById("dateInput").value;
+            const parsedDate = new Date(inputDate);
+
+            if (!isNaN(parsedDate)) {
+                const currentDate = new Date();
+                const currentDay = currentDate.toLocaleDateString(undefined, { day: 'numeric' });
+                const currentMonth = currentDate.toLocaleDateString(undefined, { month: 'long' });
+                const currentYear = currentDate.getFullYear();
+                const currentDayOfWeek = currentDate.toLocaleDateString(undefined, { weekday: 'long' });
+                const dayOfWeek = parsedDate.toLocaleDateString(undefined, { weekday: 'long' });
+                const dutyStatus = getDutyStatus(parsedDate);
+
+                document.getElementById("result").innerHTML = `
+                    Today's date is ${currentDay} ${currentMonth} ${currentYear}, On ${currentDayOfWeek}<br><br>
+                    ${parsedDate.toLocaleDateString()} is on ${dayOfWeek}<br><br>
+                    ${dutyStatus}
+                    
+                    <table>
+                      <tr>
+                        <th>GROUP 1</th>
+                        <th>GROUP 2</th>
+                      </tr>
+                      <tr>
+                        <td class="bold">Group1 A Members:</td>
+                        <td class="bold">Group2 A Members:</td>
+                      </tr>
+                      <tr>
+                        <td>1. P KWIZERA</td>
+                        <td>1. B NSHUTI</td>
+                      </tr>
+                      
+                      <tr>
+                        <td>2. E KANGABE</td>
+                        <td>2. S MUHWEZI</td>
+                      </tr>
+                      <tr>
+                        <td>3. E N SHEMA</td>
+                        <td>3. D NIZEYIMANA</td>
+                      </tr>
+                      <tr>
+                        <td>4. M KAMANZI</td>
+                        <td>4. A SHEMA</td>
+                      </tr>
+                       <tr>
+                        <td>5. M ANTONY</td>
+                        <td>5. G WILLIAM</td>
+                      </tr>
+                       <tr>
+                        <td>6. M DOMINA </td>
+                        <td>6. N FATUMA</td>
+                      </tr>
+                       <tr>
+                        <td>7. </td>
+                        <td>7. M REGIS</td>
+                      </tr>
+                      <tr>
+                       <td class="bold">Group1 B Members:</td>
+                       <td class="bold">Group2 B Members:</td>
+                      </tr>
+                      </tr>
+                      <tr>
+                        <td>1. A TURATSINZE</td>
+                        <td>1. G NANSASIRA</td>
+                      </tr>
+                      
+                      <tr>
+                        <td>2. W NDAYISENGA</td>
+                        <td>2. J SAFARI</td>
+                      </tr>
+                      <tr>
+                        <td>3. FABIUS MSAIDIZI</td>
+                        <td>3. R NSHIMIYIMANA</td>
+                      </tr>
+                      <tr>
+                        <td>4. CLAUDINE M</td>
+                        <td>4. E NDAGIJIMANA</td>
+                      </tr>
+                       <tr>
+                        <td>5. C NTAGOZERA</td>
+                        <td>5. B JAMES </td>
+                      </tr>
+                       <tr>
+                        <td>6. H HYCINTHE</td>
+                        <td>6. K JAMES</td>
+                      </tr>
+                       <tr>
+                        <td>7. N DIEUDONNE</td>
+                        <td>7. N Adeline </td>
+                      </tr>
+                    </table>`;
+                
+            } else {
+                document.getElementById("result").innerHTML = "Invalid date.";
+            }
+        }
+
+      function getGroupStatus(dayIndex, groupName) {
+    let groupStatusHTML = ``;
+    if (dayIndex === 0 || dayIndex === 2) {
+        groupStatusHTML += `<span class="group-status off-duty ${groupName}Span">${groupName} A : Off duty.</span><br><br><br>
+                            <br>
+                            <span class="group-status off-duty ${groupName}Span">${groupName} B : Off duty.</span><br><br><br><br>`;
+    } else if (dayIndex === 1) {
+        groupStatusHTML += `<span class="group-status on-duty ${groupName}Span">${groupName} A : On duty during the Day.</span><br><br><br>
+                            <br>
+                            <span class="group-status on-duty ${groupName}Span">${groupName} B : On duty during the Night.</span><br><br><br><br>`;
+    } else if (dayIndex === 3) {
+        groupStatusHTML += `<span class="group-status on-duty ${groupName}Span">${groupName} A : On duty during the Night.</span><br>
+                            <br><br><br>
+                            <span class="group-status on-duty ${groupName}Span">${groupName} B : On duty during the Day.</span><br><br>`;
+    }
+    return groupStatusHTML;
+}
+
+function getDutyStatus(date) {
+    const startDate1 = new Date(2024, 1, 15); // Group 1 starts duty
+    const startDate2 = new Date(2024, 1, 14); // Group 2 starts duty
+
+    const difference1 = date - startDate1;
+    const difference2 = date - startDate2;
+
+    const daysDifference1 = Math.floor(difference1 / (1000 * 60 * 60 * 24));
+    const daysDifference2 = Math.floor(difference2 / (1000 * 60 * 60 * 24));
+
+    const cycleLength = 4; // Number of days in the duty cycle
+    const dayIndex1 = daysDifference1 % cycleLength;
+    const dayIndex2 = daysDifference2 % cycleLength;
+
+    const group1Status = getGroupStatus(dayIndex1, "Group 1");
+    const group2Status = getGroupStatus(dayIndex2, "Group 2");
+
+    return `
+        ${group1Status}
+        <br><br>
+        ${group2Status}
+    `;
+}
+    </script>
+</body>
+</html>`
